@@ -148,7 +148,7 @@ install_yarn() {
   brew install yarn
 }
 install_asdf() {
-  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.1
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.6
 
   echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.zshrc
   echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.zshrc
@@ -249,4 +249,3 @@ fh() {
 }
 
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
