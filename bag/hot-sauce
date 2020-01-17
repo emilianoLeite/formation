@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+
+SETUP_ROOT=$HOME/.setup
+
+NERDFONTS_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/ryanoasis/nerd-fonts/releases/latest)
+NERDFONTS_VERSION=$(get_github_version $NERDFONTS_RELEASE)
+
+NERDFONTS=(
+    FiraCode
+    Hack
+)
+
+step "Installing fonts…"
+for font in ${NERDFONTS[@]}; do
+    if [ ! -d ~/Library/Fonts/$font ]; then
+        printf "${indent}  [↓] $font "
+        wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/releases/download/$NERDFONTS_VERSION/$font.zip --quiet;unzip -q ~/Library/Fonts/$font -d ~/Library/Fonts/$font
+        print_in_green "${bold}✓ done!${normal}\n"
+    else
+        print_muted "${indent}✓ $font already installed. Skipped."
+    fi
+done
+
+step "Installing oh-my-zsh…"
+if [ -d "$HOME/.oh-my-zsh" ]; then
+    print_muted "${indent}✓ oh-my-zsh already installed. Skipping."
+else
+    step "Installing oh-my-zsh…"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    print_success "oh-my-zsh installed!"
+fi
+
+
+step "Installing oh-my-zsh plugins…"
+
+if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/git-open" ]; then
+    print_muted "${indent}✓ plugin git-open already installed. Skipping."
+else
+    inform "installing git-open"
+    git clone https://github.com/paulirish/git-open.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/git-open
+    print_success "git-open installed!"
+fi
+
+if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+    print_muted "${indent}✓ plugin zsh-autosuggestions already installed. Skipping."
+else
+    inform "installing zsh-autosuggestions"
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    print_success "zsh-autosuggestions installed!"
+fi
+
+if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
+    print_muted "${indent}✓ plugin zsh-syntax-highlighting already installed. Skipping."
+else
+    inform "installing zsh-syntax-highlighting"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    print_success "zsh-syntax-highlighting installed!"
+fi
+
+if [ -f "$HOME/.zshrc" ]; then
+    if ask "Do you want to overwrite ~/.zshrc file?" Y; then
+        cp $cwd/bag/.zshrc $HOME/
+        print_success "$HOME/.zshrc overwritten"
+    else
+        print_muted "${indent}.zshrc file not overwritten.";
+    fi
+else
+    cp $cwd/.zshrc $HOME/
+fi
+
+step "Adding global git ignores"
+set_global_gitignore
+
+step "Creating git aliases"
+create_git_aliases
+
+step "Configuring vscode…"
+if [ -d "$HOME/Library/Application Support/Code - Insiders" ]; then
+    print_muted "${indent} Code Insiders installation found."
+
+    code-insiders --install-extension shan.code-settings-sync
+    cp "$cwd/bag/vscode/settings.json" "$HOME/Library/Application Support/Code - Insiders/User/"
+
+    print_in_green "${indent} Code Insiders configured."
+else
+    if [ -d "$HOME/Library/Application Support/Code" ]; then
+        print_muted "${indent} Code installation found."
+
+        code --install-extension shan.code-settings-sync
+        cp "$cwd/bag/vscode/settings.json" "$HOME/Library/Application Support/Code/User/"
+
+        print_in_green "${indent} Code configured."
+    else
+        print_muted "${indent} No VSCode installation found. Please install vscode manually and try again. Skipping."
+    fi
+fi

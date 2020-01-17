@@ -6,3 +6,4 @@ yarn
 rbenv
 fzf
 docker-compose
+autojump
