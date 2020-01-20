@@ -1,0 +1,113 @@
+[
+  {
+    "key": "shift+alt+down",
+    "command": "editor.action.copyLinesDownAction",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+d",
+    "command": "-editor.action.copyLinesDownAction",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "shift+alt+up",
+    "command": "editor.action.copyLinesUpAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+shift+alt+up",
+    "command": "-editor.action.copyLinesUpAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+]",
+    "command": "workbench.action.splitEditorRight"
+  },
+  {
+    "key": "ctrl+[",
+    "command": "workbench.action.splitEditorLeft"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "workbench.action.showAllSymbols"
+  },
+  {
+    "key": "ctrl+t",
+    "command": "-workbench.action.showAllSymbols"
+  },
+  {
+    "key": "ctrl+'",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+shift+[BracketLeft]",
+    "command": "-workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+tab",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "key": "ctrl+pagedown",
+    "command": "-workbench.action.nextEditor"
+  },
+  {
+    "key": "ctrl+shift+tab",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "key": "ctrl+pageup",
+    "command": "-workbench.action.previousEditor"
+  },
+  {
+    "key": "ctrl+meta+y",
+    "command": "extension.runFileSpecs"
+  },
+  {
+    "key": "ctrl+shift+l",
+    "command": "extension.runSpecLine"
+  },
+  {
+    "key": "meta+l",
+    "command": "-extension.runSpecLine"
+  },
+  {
+    "key": "ctrl+meta+.",
+    "command": "code-runner.run"
+  },
+  {
+    "key": "ctrl+t",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "-workbench.action.terminal.openNativeConsole",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "copyRelativeFilePath",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+shift+alt+c",
+    "command": "-copyRelativeFilePath",
+    "when": "!editorFocus"
+  },
+  {
+    "key": "ctrl+alt+u",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "bundle exec rubocop -a \u000D"
+    }
+  },
+  {
+    "key": "shift+enter",
+    "command": "extension.jumpy-word"
+  },
+  {
+    "key": "shift+/",
+    "command": "extension.jumpy-exit",
+    "when": "jumpy"
+  }
+]
