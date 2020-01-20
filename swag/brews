@@ -8,3 +8,5 @@ fzf
 docker-compose
 autojump
 openjdk
+watchman
+cmake
