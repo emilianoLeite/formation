@@ -10,3 +10,7 @@ autojump
 openjdk
 watchman
 cmake
+openssl
+coreutils
+screen
+openssh
