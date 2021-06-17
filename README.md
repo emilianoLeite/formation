@@ -214,6 +214,9 @@ Inspiration and code was taken from many sources, including:
 * [Mathias Bynens'](https://github.com/mathiasbynens) [dotfiles](https://github.com/mathiasbynens/dotfiles)
 * thoughtbot's [laptop](https://github.com/thoughtbot/laptop/)
 
+## Organize ~/.bashrc
+- [Link](https://write.as/bpsylevc6lliaspe)
+  
 ## 📜  License
 
 Formation is customized for my own needs. It is free software, and may be redistributed under the terms specified in the [LICENSE] file.
