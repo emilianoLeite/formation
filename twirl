@@ -480,7 +480,7 @@ ask() {
 }
 
 ###############################################################################
-# 
+#
 ###############################################################################
 
 # return 1 if global command line program installed, else 0
@@ -493,6 +493,18 @@ cli_is_installed() {
     echo "$return_"
 }
 
+###############################################################################
+# Git
+###############################################################################
+
+# The releases are returned in the format
+# {"id":3622206,"tag_name":"hello-1.0.0.11",…}
+# we have to extract the tag_name.
+get_github_version() {
+    echo $1 | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/'
+}
+
+
 copy_key_github() {
     inform 'Public key copied! Paste into Github…'
     [[ -f $pub ]] && cat $pub | pbcopy
@@ -503,19 +515,32 @@ copy_key_github() {
 }
 
 github_key_check() {
-	if ask "SSH key found. Enter it in Github?" Y; then
-		copy_key_github;
-	else
-		print_success "SSH key";
-	fi
+    if ask "SSH key found. Enter it in Github?" Y; then
+        copy_key_github;
+    else
+        print_success "SSH key";
+    fi
+}
+
+set_global_gitignore() {
+    cp $cwd/bag/.global_gitignore ~/.global_gitignore
+    git config --global core.excludesfile ~/.global_gitignore
+}
+
+create_git_aliases() {
+    git config --global alias.co checkout
+    git config --global alias.br branch
+    git config --global alias.ci commit
+    git config --global alias.st status
+    git config --global alias.amend "commit --amend --no-edit"
 }
 
 create_ssh_key() {
-	if ask "No SSH key found. Create one?" Y; then
-		ssh-keygen -t rsa; github_key_check;
-	else
-		return 0;
-	fi
+    if ask "No SSH key found. Create one?" Y; then
+        ssh-keygen -t rsa; github_key_check;
+    else
+        return 0;
+    fi
 }
 
 ssh_key_setup() {
@@ -548,10 +573,10 @@ gem_install_or_update() {
 install_brews() {
     if test ! $(brew list | grep $brew); then
         echo_install "Installing $brew"
-		brew install $brew >/dev/null
-		print_in_green "${bold}✓ installed!${normal}\n"
-	else
-		print_success_muted "$brew already installed. Skipped."
+        brew install $brew >/dev/null
+        print_in_green "${bold}✓ installed!${normal}\n"
+    else
+        print_success_muted "$brew already installed. Skipped."
     fi
 }
 
@@ -561,36 +586,30 @@ install_application_via_brew() {
         brew cask install $cask --appdir=/Applications >/dev/null
         print_in_green "${bold}✓ installed!${normal}\n"
     else
-    	print_success_muted "$cask already installed. Skipped."
+        print_success_muted "$cask already installed. Skipped."
     fi
 }
 
 install_application_via_app_store() {
-	if ! mas list | grep $1 &> /dev/null; then
-		echo_install "Installing $2"
-		mas install $1 >/dev/null
-		print_in_green "${bold}✓ installed!${normal}\n"
-	else
-		print_success_muted "$2 already installed. Skipped."
-	fi
+    if ! mas list | grep $1 &> /dev/null; then
+        echo_install "Installing $2"
+        mas install $1 >/dev/null
+        print_in_green "${bold}✓ installed!${normal}\n"
+    else
+        print_success_muted "$2 already installed. Skipped."
+    fi
 }
 
 install_npm_packages() {
-	if [[ $(cli_is_installed $2) == 0 ]]; then
-		echo_install "Installing $1"
-		npm install $1 -g --silent
-		print_in_green "${bold}✓ installed!${normal}\n"
-	else
-		print_success_muted "$1 already installed. Skipped."
-	fi
+    if [[ $(cli_is_installed $2) == 0 ]]; then
+        echo_install "Installing $1"
+        npm install $1 -g --silent
+        print_in_green "${bold}✓ installed!${normal}\n"
+    else
+        print_success_muted "$1 already installed. Skipped."
+    fi
 }
 
-# The releases are returned in the format
-# {"id":3622206,"tag_name":"hello-1.0.0.11",…}
-# we have to extract the tag_name.
-get_github_version() {
-    echo $1 | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/'
-}
 
 ###############################################################################
 # Text Formatting
