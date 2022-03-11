@@ -170,6 +170,9 @@ fi
 ###############################################################################
 # INSTALL: Mac App Store Apps
 ###############################################################################
+# Currently not working. Received the following message on macOS Monterey 12.2.1:
+# 	Error: This command is not supported on this macOS version due to changes in macOS. For more information see: https://github.com/mas-cli/mas#known-issues
+# 		[!] Please signin to App Store first. Skipping.
 # chapter "Installing apps from App Store…"
 # if [ -x mas ]; then
 
