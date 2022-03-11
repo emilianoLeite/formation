@@ -7,19 +7,17 @@ It can be run multiple times on the same machine safely. It installs, upgrades, 
 
 ## Install
 
-Download the script:
+1. Clone this repo
+
+2. Manually [download VSCode](https://code.visualstudio.com/download)
+
+3. Review the scripts (please don't run scripts you don't understand):
 
 ```sh
-git clone git@github.com/minamarkham/formation.git && cd formation
+code .
 ```
 
-Review the script (please don't run scripts you don't understand):
-
-```sh
-less slay
-```
-
-Slay:
+4. Slay:
 
 ```sh
 cd formation
@@ -211,12 +209,13 @@ Cask does not recognize applications installed outside of Homebrew Cask – in t
 
 Inspiration and code was taken from many sources, including:
 
+* [Mina Markham](https://github.com/minamarkham), author of the [original formation](https://github.com/minamarkham/formation)
 * [Mathias Bynens'](https://github.com/mathiasbynens) [dotfiles](https://github.com/mathiasbynens/dotfiles)
 * thoughtbot's [laptop](https://github.com/thoughtbot/laptop/)
 
 ## Organize ~/.bashrc
 - [Link](https://write.as/bpsylevc6lliaspe)
-  
+
 ## 📜  License
 
 Formation is customized for my own needs. It is free software, and may be redistributed under the terms specified in the [LICENSE] file.
