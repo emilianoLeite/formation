@@ -1,28 +1,19 @@
 #!/usr/bin/env bash
 
-install_sync_settings() {
-    vscode_command=$1
-    $vscode_command --install-extension shan.code-settings-sync
-}
-
 clone_settings() {
-    cp "$cwd/bag/vscode/settings.json" $1
+    cp "$PWD/bag/vscode/settings.json" $1
 }
 
 configure_vscode_insiders(){
-    install_sync_settings code-insiders
-
-    clone_settings "$HOME/Library/Application Support/Code - Insiders/User/"
+    clone_settings "$HOME/Library/Application\ Support/Code\ -\ Insiders/User/"
     cp "$cwd/bag/vscode/keybindings-mac.json" "$HOME/Library/Application Support/Code - Insiders/User/keybindings.json"
 
     print_in_green "${indent} Code Insiders configured."
 }
 
 configure_vscode(){
-    install_sync_settings code
-
-    clone_settings "$HOME/Library/Application Support/Code/User/"
-    cp "$cwd/bag/vscode/keybindings-mac.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
+    clone_settings "$HOME/Library/Application\ Support/Code/User/"
+    cp "$PWD/bag/vscode/keybindings-mac.json" "$HOME/Library/Application\ Support/Code/User/keybindings.json"
 
     print_in_green "${indent} Code configured."
 }
