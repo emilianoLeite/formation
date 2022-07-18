@@ -2,70 +2,92 @@
 
 SETUP_ROOT=$HOME/.setup
 
+step "Installing unzip…"
+IS_UNZIP_INSTALLED_QUERY=$(dpkg-query -W --showformat='${Status}\n' unzip|grep "install ok installed")
+if [ "" = "$IS_UNZIP_INSTALLED_QUERY" ]; then
+	sh -c "sudo apt install unzip"
+	print_success "unzip installed!"
+else
+	print_muted "${indent}✓ unzip already installed. Skipping."
+fi
+
 NERDFONTS_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/ryanoasis/nerd-fonts/releases/latest)
 NERDFONTS_VERSION=$(get_github_version $NERDFONTS_RELEASE)
 
 NERDFONTS=(
-    FiraCode
-    Hack
+	FiraCode
+	Hack
 )
 
 step "Installing fonts…"
 for font in ${NERDFONTS[@]}; do
-    if [ ! -d ~/Library/Fonts/$font ]; then
-        printf "${indent}  [↓] $font "
-        wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/releases/download/$NERDFONTS_VERSION/$font.zip --quiet;unzip -q ~/Library/Fonts/$font -d ~/Library/Fonts/$font
-        print_in_green "${bold}✓ done!${normal}\n"
-    else
-        print_muted "${indent}✓ $font already installed. Skipped."
-    fi
+	if [ ! -d ~/Library/Fonts/$font ]; then
+		printf "${indent}  [↓] $font "
+		wget -P ~/Library/Fonts https://github.com/ryanoasis/nerd-fonts/releases/download/$NERDFONTS_VERSION/$font.zip --quiet;unzip -q ~/Library/Fonts/$font -d ~/Library/Fonts/$font
+		print_in_green "${bold}✓ done!${normal}\n"
+	else
+		print_muted "${indent}✓ $font already installed. Skipped."
+	fi
 done
 
 step "Installing oh-my-zsh…"
-if [ -d "$HOME/.oh-my-zsh" ]; then
-    print_muted "${indent}✓ oh-my-zsh already installed. Skipping."
+inform "cheking shell…"
+
+IS_ZSH_INSTALLED_QUERY=$(dpkg-query -W --showformat='${Status}\n' zsh|grep "install ok installed")
+if [ "" = "$IS_ZSH_INSTALLED_QUERY" ]; then
+	inform "installing zsh…"
+	sh -c "sudo apt install zsh"
+	sh -c "chsh -s $(which zsh)"
+	print_success "zsh installed!"
 else
-    step "Installing oh-my-zsh…"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-    print_success "oh-my-zsh installed!"
+	print_muted "${indent}✓ zsh already installed. Skipping."
+fi
+
+
+if [ -d "$HOME/.oh-my-zsh" ]; then
+	print_muted "${indent}✓ oh-my-zsh already installed. Skipping."
+else
+	inform "installing oh-my-zsh…"
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+	print_success "oh-my-zsh installed!"
 fi
 
 
 step "Installing oh-my-zsh plugins…"
 
 if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/git-open" ]; then
-    print_muted "${indent}✓ plugin git-open already installed. Skipping."
+	print_muted "${indent}✓ plugin git-open already installed. Skipping."
 else
-    inform "installing git-open"
-    git clone https://github.com/paulirish/git-open.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/git-open
-    print_success "git-open installed!"
+	inform "installing git-open"
+	git clone https://github.com/paulirish/git-open.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/git-open
+	print_success "git-open installed!"
 fi
 
 if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
-    print_muted "${indent}✓ plugin zsh-autosuggestions already installed. Skipping."
+	print_muted "${indent}✓ plugin zsh-autosuggestions already installed. Skipping."
 else
-    inform "installing zsh-autosuggestions"
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    print_success "zsh-autosuggestions installed!"
+	inform "installing zsh-autosuggestions"
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	print_success "zsh-autosuggestions installed!"
 fi
 
 if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
-    print_muted "${indent}✓ plugin zsh-syntax-highlighting already installed. Skipping."
+	print_muted "${indent}✓ plugin zsh-syntax-highlighting already installed. Skipping."
 else
-    inform "installing zsh-syntax-highlighting"
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    print_success "zsh-syntax-highlighting installed!"
+	inform "installing zsh-syntax-highlighting"
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	print_success "zsh-syntax-highlighting installed!"
 fi
 
 if [ -f "$HOME/.zshrc" ]; then
-    if ask "Do you want to overwrite ~/.zshrc file?" Y; then
-        cp $cwd/bag/.zshrc $HOME/
-        print_success "$HOME/.zshrc overwritten"
-    else
-        print_muted "${indent}.zshrc file not overwritten.";
-    fi
+	if ask "Do you want to overwrite ~/.zshrc file?" Y; then
+		cp $cwd/bag/.zshrc $HOME/
+		print_success "$HOME/.zshrc overwritten"
+	else
+		print_muted "${indent}.zshrc file not overwritten.";
+	fi
 else
-    cp $cwd/.zshrc $HOME/
+	cp $cwd/.zshrc $HOME/
 fi
 
 step "Adding global git ignores"
@@ -76,25 +98,25 @@ create_git_aliases
 
 step "Configuring vscode…"
 if [ -e "$cwd/bag/vscode/helper_functions" ]; then
-    cd "$(dirname "${BASH_SOURCE[0]}")" \
-        && . "$cwd/bag/vscode/helper_functions"
+	cd "$(dirname "${BASH_SOURCE[0]}")" \
+		&& . "$cwd/bag/vscode/helper_functions"
 else
-    printf "\n ⚠️  $cwd/bag/vscode/helper_fuctions not found. Aborting…\n"
-    exit 1
+	printf "\n ⚠️  $cwd/bag/vscode/helper_fuctions not found. Aborting…\n"
+	exit 1
 fi
 
 if [ -d "$HOME/Library/Application Support/Code - Insiders" ]; then
-    print_muted "${indent} Code Insiders installation found."
+	print_muted "${indent} Code Insiders installation found."
 
-    configure_vscode_insiders
+	configure_vscode_insiders
 else
-    if [ -d "$HOME/Library/Application Support/Code" ]; then
-        print_muted "${indent} Code installation found."
+	if [ -d "$HOME/Library/Application Support/Code" ]; then
+		print_muted "${indent} Code installation found."
 
-        configure_vscode
-    else
-        print_muted "${indent} No VSCode installation found. Please install vscode manually and try again. Skipping."
-    fi
+		configure_vscode
+	else
+		print_muted "${indent} No VSCode installation found. Please install vscode manually and try again. Skipping."
+	fi
 fi
 
 
