@@ -9,22 +9,11 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
+ZSH_THEME="robbyrussell"
 # ZSH_THEME="avit"
 # ZSH_THEME="miloshadzic"
 # ZSH_THEME="agnoster"
-ZSH_THEME="spaceship"
-DEFAULT_USER="emiliano.leite"
-SPACESHIP_GIT_PREFIX=""
-SPACESHIP_PACKAGE_SHOW='false'
-SPACESHIP_DOCKER_SHOW='false'
-SPACESHIP_KUBECTL_SHOW='false'
-SPACESHIP_KUBECTL_VERSION_SHOW='false'
-SPACESHIP_KUBECONTEXT_SHOW='false'
-SPACESHIP_TERRAFORM_SHOW='false'
-SPACESHIP_NODE_PREFIX=''
-SPACESHIP_RUBY_PREFIX=''
-SPACESHIP_BATTERY_THRESHOLD='50'
+
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
