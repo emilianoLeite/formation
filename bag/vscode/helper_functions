@@ -5,15 +5,15 @@ clone_settings() {
 }
 
 configure_vscode_insiders(){
-    clone_settings "$HOME/Library/Application\ Support/Code\ -\ Insiders/User/"
+    clone_settings "$HOME/Library/Application Support/Code - Insiders/User/"
     cp "$cwd/bag/vscode/keybindings-mac.json" "$HOME/Library/Application Support/Code - Insiders/User/keybindings.json"
 
     print_in_green "${indent} Code Insiders configured."
 }
 
 configure_vscode(){
-    clone_settings "$HOME/Library/Application\ Support/Code/User/"
-    cp "$PWD/bag/vscode/keybindings-mac.json" "$HOME/Library/Application\ Support/Code/User/keybindings.json"
+    clone_settings "$HOME/Library/Application Support/Code/User/"
+    cp "$PWD/bag/vscode/keybindings-mac.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
 
     print_in_green "${indent} Code configured."
 }
