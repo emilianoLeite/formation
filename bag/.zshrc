@@ -100,6 +100,7 @@ alias yas="yarn start"
 alias yad="yarn dev"
 alias yat="yarn test"
 alias yatch="yarn test --watch"
+alias cz="code ~/.zshrc"
 
 # =====  FUNCTIONS  =====
 # short for fixup_and_rebase
