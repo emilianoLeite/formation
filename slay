@@ -67,23 +67,6 @@ ask_for_sudo
 # ssh_key_setup
 
 ###############################################################################
-# INSTALL: Customizations
-###############################################################################
-chapter "Adding hot sauce…"
-
-if [ -e $cwd/bag/hot-sauce ]; then
-	if ask "Do you want to add hot sauce?" Y; then
-		cd "$(dirname "${BASH_SOURCE[0]}")" \
-		&& . "$cwd/bag/hot-sauce"; printf "\n"; print_in_green "  [✓] "; printf "You got hot sauce in your bag. 🔥 ${bold}Swag.${normal}\n";
-	else
-		print_success_muted "Hot sauce declined. Skipped.";
-	fi
-else
-	printf "\n ⚠️  $cwd/bag/hot-sauce not found\n"
-	exit 1
-fi
-
-###############################################################################
 # INSTALL: Dependencies
 ###############################################################################
 chapter "Installing Dependencies…"
@@ -213,6 +196,22 @@ if [ -e $cwd/swag/npm ]; then
 		VALUE="${pkg##*::}"
 		install_npm_packages $KEY $VALUE
 	done
+fi
+
+###############################################################################
+# INSTALL: Customizations
+###############################################################################
+chapter "Adding hot sauce…"
+if [ -e $cwd/bag/hot-sauce ]; then
+	if ask "Do you want to add hot sauce?" Y; then
+		cd "$(dirname "${BASH_SOURCE[0]}")" \
+		&& . "$cwd/bag/hot-sauce"; printf "\n"; print_in_green "  [✓] "; printf "You got hot sauce in your bag. 🔥 ${bold}Swag.${normal}\n";
+	else
+		print_success_muted "Hot sauce declined. Skipped.";
+	fi
+else
+	printf "\n ⚠️  $cwd/bag/hot-sauce not found\n"
+	exit 1
 fi
 
 ###############################################################################
