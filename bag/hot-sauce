@@ -33,22 +33,16 @@ for font in ${NERDFONTS[@]}; do
 done
 
 step "Installing oh-my-zsh…"
-inform "cheking shell…"
-
-IS_ZSH_INSTALLED_QUERY=$(dpkg-query -W --showformat='${Status}\n' zsh|grep "install ok installed")
-if [ "" = "$IS_ZSH_INSTALLED_QUERY" ]; then
-	inform "installing zsh…"
-	sh -c "sudo apt install zsh"
-	sh -c "chsh -s $(which zsh)"
-	print_success "zsh installed!"
-else
-	print_muted "${indent}✓ zsh already installed. Skipping."
-fi
 
 
 if [ -d "$HOME/.oh-my-zsh" ]; then
 	print_muted "${indent}✓ oh-my-zsh already installed. Skipping."
 else
+	inform "installing zsh…"
+	sh -c "brew install zsh"
+	sudo sh -c "echo $(which zsh) >> /etc/shells"
+	sh -c "chsh -s $(which zsh)"
+	print_success "zsh installed!"
 	inform "installing oh-my-zsh…"
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 	print_success "oh-my-zsh installed!"
