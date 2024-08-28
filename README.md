@@ -135,15 +135,6 @@ The setup process will install:
 * [VLC](http://www.videolan.org/) for a better media player.
 </details>
 
-<details>
-<summary>Browsers</summary>
-
-* [Blisk](https://blisk.io/) for cross-device web development.
-* [Brave](https://brave.com/) for web browsing without ads.
-* [Chrome](https://www.google.com/chrome/browser/desktop/) for fast and free web browsing.
-* [Firefox](https://www.mozilla.org/en-US/firefox/new/) for web browsing and testing.
-* [TorBrowser](https://www.torproject.org/projects/torbrowser.html.en) for super secret web browsing.
-</details>
 
 <sub>See [`swag`](swag) for the full list of apps that will be installed. Adjust it to your personal taste.</sub>
 
