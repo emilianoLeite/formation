@@ -127,3 +127,11 @@ install_chrome_extension () {
   echo "}" >> "$pref_file_path"
   echo Added \""$pref_file_path"\" ["$2"]
 }
+
+step "Installing aws-cli…"
+if [ ! -x aws ]; then
+	curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+	sudo installer -pkg AWSCLIV2.pkg -target /
+else
+	print_muted "${indent} aws-cli already installed."
+fi
