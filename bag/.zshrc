@@ -13,10 +13,7 @@ ZSH_THEME="robbyrussell"
 # ZSH_THEME="avit"
 # ZSH_THEME="miloshadzic"
 # ZSH_THEME="agnoster"
-# ZSH_THEME="spaceship"
-# SPACESHIP_DOCKER_SHOW=false
-# SPACESHIP_DOCKER_COMPOSE_SHOW=false
-# SPACESHIP_BATTERY_THRESHOLD=15
+# check `formation/spaceship_config` for spaceship settings
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
