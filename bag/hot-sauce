@@ -50,15 +50,6 @@ fi
 
 
 step "Installing oh-my-zsh plugins…"
-
-if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/git-open" ]; then
-	print_muted "${indent}✓ plugin git-open already installed. Skipping."
-else
-	inform "installing git-open"
-	git clone https://github.com/paulirish/git-open.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/git-open
-	print_success "git-open installed!"
-fi
-
 if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
 	print_muted "${indent}✓ plugin zsh-autosuggestions already installed. Skipping."
 else

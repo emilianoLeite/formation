@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -13,7 +13,10 @@ ZSH_THEME="robbyrussell"
 # ZSH_THEME="avit"
 # ZSH_THEME="miloshadzic"
 # ZSH_THEME="agnoster"
-
+# ZSH_THEME="spaceship"
+# SPACESHIP_DOCKER_SHOW=false
+# SPACESHIP_DOCKER_COMPOSE_SHOW=false
+# SPACESHIP_BATTERY_THRESHOLD=15
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -59,7 +62,6 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  git-open
   zsh-autosuggestions
   zsh-syntax-highlighting
   docker
@@ -73,7 +75,7 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -101,8 +103,32 @@ alias yad="yarn dev"
 alias yat="yarn test"
 alias yatch="yarn test --watch"
 alias cz="code ~/.zshrc"
+alias awslp="aws-profile && aws-login"
+alias aws-login=aws-login-fn
+
 
 # =====  FUNCTIONS  =====
+# aws-login-tool alias
+aws-login-fn() {
+  echo "aws-login getting available roles"
+  local selected_role=$(aws-login-tool list-roles -m "${@:1}" | peco --layout bottom-up) || return
+
+  if [[ ! -z $selected_role ]]; then
+    local account_id=$(echo "$selected_role" | awk '{print $2}')
+    local role=$(echo "$selected_role" | awk '{print $4}')
+
+    unset -m "AWS_*"  # prevent aws tokens stored in env variables
+    export AWS_PROFILE=$role@$account_id
+
+    echo "aws-login using $AWS_PROFILE"
+    aws-login-tool login -a "$account_id" -r "$role" -d 14400 $@
+  else
+    echo "aws-login requires a role and account – no role selected"
+  fi
+}
+function aws-profile() {
+  export AWS_PROFILE="$(grep '\[.*\]' ~/.aws/credentials | tr -d '[-]' | fzf)"
+}
 # short for fixup_and_rebase
 frb() {
   git commit --fixup=$1 && git rebase -i --autosquash $1~
@@ -178,7 +204,7 @@ fh() {
   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-. /usr/local/opt/asdf/libexec/asdf.sh
+
