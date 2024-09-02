@@ -83,28 +83,6 @@ set_global_gitignore
 step "Creating git aliases"
 create_git_aliases
 
-step "Configuring vscode…"
-if [ -e "$cwd/bag/vscode/helper_functions" ]; then
-	cd "$(dirname "${BASH_SOURCE[0]}")" \
-		&& . "$cwd/bag/vscode/helper_functions"
-else
-	printf "\n ⚠️  $cwd/bag/vscode/helper_fuctions not found. Aborting…\n"
-	exit 1
-fi
-
-if [ -d "$HOME/Library/Application Support/Code - Insiders" ]; then
-	print_muted "${indent} Code Insiders installation found."
-
-	configure_vscode_insiders
-else
-	if [ -d "$HOME/Library/Application Support/Code" ]; then
-		print_muted "${indent} Code installation found."
-
-		configure_vscode
-	else
-		print_muted "${indent} No VSCode installation found. Please install vscode manually and try again. Skipping."
-	fi
-fi
 
 
 install_chrome_extension () {
