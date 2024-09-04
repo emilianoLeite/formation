@@ -130,10 +130,11 @@ function aws-profile() {
 frb() {
   git commit --fixup=$1 && git rebase -i --autosquash $1~
 }
-gpmr() {
+gppr() {
   branch=$(git symbolic-ref -q --short HEAD)
   result=$(git push origin $branch 2>&1)
-  url=$(echo "$result" | grep -o 'http\S*')
+  # url=$(echo "$result" | grep -o 'http\S*')
+  url=$(echo "$result" | grep -o 'https://stash\.int\.klarna\.net\S*')
   if [ $url ]; then
     case "$OSTYPE" in
       darwin*)  open $url ;;
@@ -142,7 +143,7 @@ gpmr() {
       *)        echo "Unknown OS: $OSTYPE" ;;
     esac
     echo $result
-    echo "Opened MR in your browser."
+    echo "Opened PR in your browser."
   else
     echo $result
   fi
